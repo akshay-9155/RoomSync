@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .neumorphism {
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    background: #e0e5ec;
+    border-radius: 20px;
+  }
+  .neumorphism-dark {
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.2), -8px -8px 15px rgba(255, 255, 255, 0.4);
+    background: #b4b8c6;
+    border-radius: 20px;
+  }
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    width: 100%;
+    /* background-color: #111;
+    color: #fff; */
+}
+
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar for horizontal scrolling */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Track color */
+  border-radius: 4px; /* Round corners */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #a1c4fd, #c2e9fb); /* Gradient thumb color */
+  border-radius: 4px; /* Round corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #89b4fa, #a9d6fd); /* Hover effect */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar thin */
+  scrollbar-color: #a1c4fd #f0f0f0; /* Thumb and track colors */
+}
+
+/* For Edge and IE (optional, using the WebKit styles will suffice for modern browsers) */
+html {
+  -ms-overflow-style: none; /* Hides the scrollbar in older versions */
+}
