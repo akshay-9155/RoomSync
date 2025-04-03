@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#222] sticky w-full text-zinc-200 p-4 bottom-0">
+    <footer className="bg-[#222] sticky w-full text-zinc-200 p-4 top-full">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-white">
         <div className="flex justify-center items-center mb-4 md:mb-0">
           <p className="text-sm">© 2024 RoomSync. All Rights Reserved.</p>

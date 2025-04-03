@@ -44,7 +44,7 @@ const Home = () => {
               List your available rooms and find compatible roommates quickly.
             </p>
             <button
-              onClick={ () => navigate("/roomownerdetails")}
+              onClick={() => navigate("/roomownerdetails")}
               className="mt-4 px-6 py-2 bg-green-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
             >
               Start Listing
@@ -61,16 +61,14 @@ const Home = () => {
               Use the integrated chat feature to easily communicate with
               potential roommates or owners.
             </p>
-            <button className="mt-4 px-6 py-2 bg-indigo-500 text-white rounded-full shadow-neumorphism hover:shadow-md">
+            <button
+              onClick={() => navigate("/chat")}
+              className="mt-4 px-6 py-2 bg-indigo-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
+            >
               Start Chatting
             </button>
           </div>
         </div>
-
-        {/* Footer Section */}
-        <footer className="mt-12 text-center">
-          <p className="text-gray-600">© 2024 RoomSync, All Rights Reserved</p>
-        </footer>
       </div>
     </div>
   );

@@ -20,13 +20,13 @@ const Login = () => {
 
   return (
     <div className="flex relative justify-center h-[80%] w-full items-center p-2">
-      <div className="bg-gray-200 flex flex-col md:flex-row justify-around items-center gap-10 px-2 py-10 md:px-6 rounded-lg shadow-md md:w-[80%]">
+      <div className="bg-gray-200 flex flex-col md:flex-row justify-around items-center gap-4 sm:gap-10 px-2 py-10 md:px-6 rounded-lg shadow-md md:w-[80%]">
         {/* Logo Section */}
         <div className="flex justify-center items-center">
           <img
             src={logo}
             alt="RoomSync Logo"
-            className="w-80 rounded-full" // Adjust logo size based on screen size
+            className=" w-36 sm:w-80 rounded-full" // Adjust logo size based on screen size
           />
         </div>
 
