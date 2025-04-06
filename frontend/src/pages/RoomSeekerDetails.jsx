@@ -118,13 +118,6 @@ const RoomSeekerDetails = () => {
               onChange={(e) => setContact(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
-            {/* <input
-              type="text"
-              placeholder="Preferred Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
-            /> */}
             <input
               type="number"
               placeholder="Budget (per month)"
@@ -152,37 +145,8 @@ const RoomSeekerDetails = () => {
               interests={interests}
               setInterests={setInterests}
             />
-            {/* <div className=" bg-[#e0e5ec] text-[#222] rounded-lg neumorphism flex items-center">
-              <label className=" text-center text-sm font-medium text-gray-700">
-                Move-in Date
-              </label>
-              <input
-                type="date"
-                value={moveInDate}
-                onChange={(e) => setMoveInDate(e.target.value)}
-                className="p-3 w-full bg-[#e0e5ec] text-[#222] rounded-lg border-l-gray-400 border-4"
-              />
-            </div> */}
-            {/* <select
-              value={roomType}
-              onChange={(e) => setRoomType(e.target.value)}
-              className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
-            >
-              <option value="" disabled>
-                Room Type
-              </option>
-              <option value="pg">PG</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="1bhk">1BHK</option>
-              <option value="2bhk">2BHK</option>
-              <option value="3bhk">3BHK</option>
-              <option value="others">Others</option>
-            </select> */}
           </div>
 
-          {/* Room Preferences */}
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"></div> */}
 
           {/* Lifestyle Preferences */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
