@@ -8,14 +8,14 @@ import {
     updateRoom,
     deleteRoom,
 } from "../controllers/room.controller.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import { authenticate, authorizeRoles } from "../middlewares/auth.middleware.js";
 
 const roomRouter = Router();
 
 // @route   POST /api/rooms
 // @desc    Create a new room listing
 // @access  Private (Room Owners)
-roomRouter.post("/", authenticate, createRoom);
+roomRouter.post("/", authenticate, authorizeRoles("owner"), createRoom);
 
 // @route   GET /api/rooms
 // @desc    Get all rooms with filters (public access)
@@ -30,11 +30,11 @@ roomRouter.get("/:id", getRoomById);
 // @route   PUT /api/rooms/:id
 // @desc    Update room listing (only owner or admin)
 // @access  Private
-roomRouter.put("/:id", authenticate, updateRoom);
+roomRouter.put("/:id", authenticate, authorizeRoles("owner"), updateRoom);
 
 // @route   DELETE /api/rooms/:id
 // @desc    Delete room listing
 // @access  Private
-roomRouter.delete("/:id", authenticate, deleteRoom);
+roomRouter.delete("/:id", authenticate, authorizeRoles("owner"), deleteRoom);
 
 export default roomRouter;
