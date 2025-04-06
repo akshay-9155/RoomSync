@@ -12,10 +12,11 @@ app.use(express.json({
     limit: "16kb"
 }));
 
-app.get("/", (req, res) => {
-    res.json({ "message": "You are on homepage." });
-})
+import authRouter from './routes/auth.route.js';
+import userRouter from './routes/user.route.js';
 
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
 import pageNotFound from './middlewares/pageNotFound.middleware.js';
 import errorHandler from './middlewares/error.middleware.js';
