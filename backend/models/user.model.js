@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema(
     {
         role: { type: String, enum: ["seeker", "owner"], required: true },
         name: { type: String, required: true },
+        gender: { type: String, enum: ["male", "female", "other"] },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: [true, 'Password is required'] },
         profilePicture: { type: String },
@@ -18,7 +19,7 @@ const UserSchema = new mongoose.Schema(
             smoking: { type: Boolean },
             drinking: { type: Boolean },
             pets: { type: Boolean },
-            diet: {type: String, enum: ["vegetarian", "non-vegetarian", "eggetrian"]}
+            diet: {type: String, enum: ["vegetarian", "non-vegetarian", "eggetarian"]}
         },
         hobbies: {
             type: String

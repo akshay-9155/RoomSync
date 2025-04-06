@@ -7,7 +7,7 @@ const RoomSchema = new mongoose.Schema(
         description: { type: String },
         location: { type: String, required: true },
         rent: { type: Number, required: true },
-        type: { type: String, enum: ["PG", "Apartment", "House", "1BHK", "2BHK", "3BHK", "Others"], required: true },
+        type: { type: String, enum: ["pg", "apartment", "house", "1bhk", "2bhk", "3bhk", "others"], required: true },
         facilities: [String],
         photos: [String],
         availability: { type: Boolean, default: true },

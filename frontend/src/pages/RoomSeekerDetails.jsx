@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InterestInput from "../components/InterestInput";
 
 const RoomSeekerDetails = () => {
   const [name, setName] = useState("");
@@ -7,9 +8,17 @@ const RoomSeekerDetails = () => {
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
+  const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [budget, setBudget] = useState("");
-  const [moveInDate, setMoveInDate] = useState("");
+  const [profession, setProfession] = useState("");
+  const [lifestyle, setLifestyle] = useState("");
+  const [interestInput, setInterestInput] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [moveInDate, setMoveInDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0]; // "YYYY-MM-DD"
+  });
   const [roomType, setRoomType] = useState("");
   const [smoking, setSmoking] = useState("");
   const [drinking, setDrinking] = useState("");
@@ -96,6 +105,12 @@ const RoomSeekerDetails = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
+            <textarea
+              placeholder="Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="p-3 col-span-1 md:col-span-2 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
+            />
             <input
               type="tel"
               placeholder="Contact Number"
@@ -103,17 +118,13 @@ const RoomSeekerDetails = () => {
               onChange={(e) => setContact(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
-          </div>
-
-          {/* Room Preferences */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input
+            {/* <input
               type="text"
               placeholder="Preferred Location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
-            />
+            /> */}
             <input
               type="number"
               placeholder="Budget (per month)"
@@ -122,20 +133,56 @@ const RoomSeekerDetails = () => {
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
             <input
-              type="date"
-              placeholder="Move-in Date"
-              value={moveInDate}
-              onChange={(e) => setMoveInDate(e.target.value)}
+              type="text"
+              placeholder="Profession"
+              value={profession}
+              onChange={(e) => setProfession(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
             <input
               type="text"
-              placeholder="Room Type (e.g., Shared, Single)"
+              placeholder="Your lifestyle preferences (e.g., fitness, quiet, night owl)"
+              value={lifestyle}
+              onChange={(e) => setLifestyle(e.target.value)}
+              className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
+            />
+            <InterestInput
+              interestInput={interestInput}
+              setInterestInput={setInterestInput}
+              interests={interests}
+              setInterests={setInterests}
+            />
+            {/* <div className=" bg-[#e0e5ec] text-[#222] rounded-lg neumorphism flex items-center">
+              <label className=" text-center text-sm font-medium text-gray-700">
+                Move-in Date
+              </label>
+              <input
+                type="date"
+                value={moveInDate}
+                onChange={(e) => setMoveInDate(e.target.value)}
+                className="p-3 w-full bg-[#e0e5ec] text-[#222] rounded-lg border-l-gray-400 border-4"
+              />
+            </div> */}
+            {/* <select
               value={roomType}
               onChange={(e) => setRoomType(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
-            />
+            >
+              <option value="" disabled>
+                Room Type
+              </option>
+              <option value="pg">PG</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="1bhk">1BHK</option>
+              <option value="2bhk">2BHK</option>
+              <option value="3bhk">3BHK</option>
+              <option value="others">Others</option>
+            </select> */}
           </div>
+
+          {/* Room Preferences */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"></div> */}
 
           {/* Lifestyle Preferences */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -147,8 +194,8 @@ const RoomSeekerDetails = () => {
               <option value="" disabled>
                 Smoking Preference
               </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
             </select>
             <select
               value={drinking}
@@ -158,8 +205,8 @@ const RoomSeekerDetails = () => {
               <option value="" disabled>
                 Drinking Preference
               </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
             </select>
             <select
               value={pets}
@@ -169,8 +216,8 @@ const RoomSeekerDetails = () => {
               <option value="" disabled>
                 Comfortable with Pets
               </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
             </select>
             <select
               value={diet}
@@ -193,16 +240,12 @@ const RoomSeekerDetails = () => {
             onChange={(e) => setHobbies(e.target.value)}
             className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
           />
-          <textarea
-            placeholder="Additional Notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
-          />
 
           {/* Profile Picture Upload */}
           <div className="neumorphism p-4 rounded-xl">
+            <label htmlFor="profilePicture">Add Profile Photo</label>
             <input
+              id="profilePicture"
               type="file"
               accept="image/*"
               onChange={handleProfilePictureUpload}
