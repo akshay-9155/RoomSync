@@ -12,6 +12,7 @@ import Profile from "../pages/Profile";
 import Footer from "../components/Footer";
 import RoomSeekerDetails from "../pages/RoomSeekerDetails";
 import RoomOwnerDetails from "../pages/RoomOwnerDetails";
+import UnderDevelopment from "../pages/UnderDevelopment";
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/roomseekerdetails" element={<RoomSeekerDetails />} />
           <Route path="/roomownerdetails" element={<RoomOwnerDetails />} />
+          <Route path="/upderDevelopment" element={<UnderDevelopment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
