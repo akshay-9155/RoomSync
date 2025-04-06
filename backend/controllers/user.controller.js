@@ -32,7 +32,9 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
         throw new ApiError(403, "You are not authorized to update this profile");
     }
 
-    const allowedUpdates = ["name", "age", "profession", "lifestyle", "roommatePreferences", "interests", "hobbies", "contactInfo"];
+    // Profile Picture update logic not implemented yet
+
+    const allowedUpdates = ["name", "age", "profession", "lifestyle", "interests", "smoking", "drinking", "pets", "diet", "contactInfo"];
     const updates = {};
 
     for (const key of allowedUpdates) {

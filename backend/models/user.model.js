@@ -14,13 +14,10 @@ const UserSchema = new mongoose.Schema(
         profession: { type: String },
         lifestyle: { type: String },
         interests: [String],
-        roommatePreferences: {
-            gender: { type: String },
-            smoking: { type: Boolean },
-            drinking: { type: Boolean },
-            pets: { type: Boolean },
-            diet: {type: String, enum: ["vegetarian", "non-vegetarian", "eggetarian"]}
-        },
+        smoking: { type: Boolean },
+        drinking: { type: Boolean },
+        pets: { type: Boolean },
+        diet: { type: String, enum: ["vegetarian", "non-vegetarian", "eggetarian"] },
         hobbies: {
             type: String
         },
