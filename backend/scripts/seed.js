@@ -19,6 +19,15 @@ mongoose
         process.exit(1);
     });
 
+const genratePhoneNumber = () => {
+    let mobileNumber = "+91";
+    for (let index = 0; index < 10; index++) {
+        let digit = Math.floor(Math.random()*10);
+        mobileNumber += digit;        
+    }
+    return mobileNumber;
+}
+
 // Generate sample users
 const generateUsers = async (count = 50) => {
     const users = [];
@@ -30,6 +39,10 @@ const generateUsers = async (count = 50) => {
         users.push({
             name: faker.person.fullName(),
             email: faker.internet.email(),
+            contactInfo: {
+                phone: genratePhoneNumber(),
+                address: ""
+            },
             password: hashedPassword,
             role
         });
@@ -41,7 +54,7 @@ const generateUsers = async (count = 50) => {
 
 // Generate sample rooms
 const generateRooms = async (owners, count = 100) => {
-    const types = ["PG", "Apartment", "House", "1BHK", "2BHK", "3BHK"];
+    const types = ["pg", "apartment", "house", "1bhk", "2bhk", "3bhk"];
     const rooms = [];
 
     for (let i = 0; i < count; i++) {

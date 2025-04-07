@@ -8,21 +8,24 @@ import { generateAccessAndRefreshTokens } from "../utils/helper.js";
 import jwt from 'jsonwebtoken';
 
 export const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, mobileNumber } = req.body;
 
     // Basic validations
-    if (!name || !email || !password || !role) {
-        throw new ApiError(400, "All fields are required (name, email, password, role)");
+    if (!name || !email || !password || !role || !mobileNumber) {
+        throw new ApiError(400, "All fields are required (name, email, password, role, mobileNumber)");
     }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        throw new ApiError(409, "User already exists with this email");
-    }
+    const existingUser = await User.findOne({
+        $or: [{ email }, { mobileNumber }]
+    });
 
+    if (existingUser) {
+        throw new ApiError(409, "User already exists with this email or mobile number");
+    }
+    const contactInfo = {phone: mobileNumber, address: ""};
     // Create new user
-    const newUser = await User.create({ name, email, password, role });
+    const newUser = await User.create({ name, email, password, role, contactInfo });
 
     // Generate tokens using model method
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(newUser._id);
@@ -32,6 +35,7 @@ export const registerUser = asyncHandler(async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
+        contactInfo: newUser.contactInfo
     };
 
     const options = {
