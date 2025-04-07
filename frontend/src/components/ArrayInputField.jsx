@@ -1,21 +1,22 @@
 import { useState } from "react";
 
-const InterestInput = ({
-  interestInput,
-  setInterestInput,
-  interests,
-  setInterests,
+const ArrayInputField = ({
+  tag,
+  setTag,
+  tagArray,
+  setTagArray,
+  placeholder
 }) => {
   const handleAddInterest = () => {
-    const trimmed = interestInput.trim();
-    if (trimmed && !interests.includes(trimmed)) {
-      setInterests([...interests, trimmed]);
-      setInterestInput("");
+    const trimmed = tag.trim();
+    if (trimmed && !tagArray.includes(trimmed)) {
+      setTagArray([...tagArray, trimmed]);
+      setTag("");
     }
   };
 
   const handleRemoveInterest = (index) => {
-    setInterests(interests.filter((_, i) => i !== index));
+    setTagArray(tagArray.filter((_, i) => i !== index));
   };
 
   return (
@@ -23,9 +24,9 @@ const InterestInput = ({
       <div className="flex items-center gap-2">
         <input
           type="text"
-          value={interestInput}
-          onChange={(e) => setInterestInput(e.target.value)}
-          placeholder="e.g. Gaming, Reading, Trekking"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+          placeholder={placeholder}
           className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism w-full"
         />
         <button
@@ -37,9 +38,9 @@ const InterestInput = ({
         </button>
       </div>
 
-      {/* Display added interests */}
+      {/* Display added tagArray */}
       <div className="flex flex-wrap gap-2">
-        {interests.map((item, index) => (
+        {tagArray.map((item, index) => (
           <span
             key={index}
             className=" bg-[#e0e5ec] text-[#222] rounded-lg neumorphism px-3 py-1 flex items-center gap-2"
@@ -59,4 +60,4 @@ const InterestInput = ({
   );
 };
 
-export default InterestInput;
+export default ArrayInputField;

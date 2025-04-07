@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InterestInput from "../components/InterestInput";
+import ArrayInputField from "../components/ArrayInputField";
 
 const RoomSeekerDetails = () => {
   const [name, setName] = useState("");
@@ -139,14 +139,14 @@ const RoomSeekerDetails = () => {
               onChange={(e) => setLifestyle(e.target.value)}
               className="p-3 bg-[#e0e5ec] text-[#222] rounded-lg neumorphism"
             />
-            <InterestInput
-              interestInput={interestInput}
-              setInterestInput={setInterestInput}
-              interests={interests}
-              setInterests={setInterests}
+            <ArrayInputField
+              tag={interestInput}
+              setTag={setInterestInput}
+              tagArray={interests}
+              setTagArray={setInterests}
+              placeholder="Interests (e.g. Gaming, Reading, Trekking)"
             />
           </div>
-
 
           {/* Lifestyle Preferences */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

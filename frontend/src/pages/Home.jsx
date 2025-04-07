@@ -44,7 +44,7 @@ const Home = () => {
               List your available rooms and find compatible roommates quickly.
             </p>
             <button
-              onClick={() => navigate("/roomownerdetails")}
+              onClick={() => navigate("/ListRoom")}
               className="mt-4 px-6 py-2 bg-green-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
             >
               Start Listing
