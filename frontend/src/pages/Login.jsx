@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setUser } from "../features/authSlice";
-import logo from "../assets/logo.webp"; // Import your logo here
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.webp";
 import Button from "../components/Button";
+import useLogin from "../hooks/useLogin"; // import the hook
 
 const Login = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleLogin = (e) => {
+
+  const { login, loading, error } = useLogin(); // destructure from hook
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simulate authentication and dispatch the setUser action
-    const userData = { email, name: "John Doe" }; // Mocked user data
-    dispatch(setUser(userData));
-    navigate('/')
+    const result = await login(email, password);
+    if (result.success) {
+      navigate("/");
+    }
   };
 
   return (
@@ -26,20 +27,21 @@ const Login = () => {
           <img
             src={logo}
             alt="RoomSync Logo"
-            className=" w-36 sm:w-80 rounded-full" // Adjust logo size based on screen size
+            className="w-36 sm:w-80 rounded-full"
           />
         </div>
 
         {/* Login Form */}
-        <div className=" ">
+        <div>
           <h2 className="text-3xl font-mono text-center mb-4">Login</h2>
-          <form className=" text-center" onSubmit={handleLogin}>
+          <form className="text-center" onSubmit={handleLogin}>
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mb-4 text-[#222] p-2 w-full border outline-none bg-gray-300 rounded"
+              required
             />
             <input
               type="password"
@@ -47,8 +49,13 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mb-4 text-[#222] p-2 w-full border outline-none bg-gray-300 rounded"
+              required
             />
-            <Button content="Login"/>
+            <Button
+              content={loading ? "Loading" : "Login"}
+              disabled={loading}
+            />
+            {error && <p className="text-red-500 mt-2">{error}</p>}
           </form>
         </div>
       </div>

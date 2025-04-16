@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rooms: [],
+  selectedRoom: null,
   loading: false,
 };
 
@@ -14,6 +15,9 @@ const roomSlice = createSlice({
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
+    },
+    setSelectedRoom: (state, action) => {
+      state.selectedRoom = action.payload;
     },
   },
 });
