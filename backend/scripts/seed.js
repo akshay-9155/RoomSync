@@ -1,5 +1,3 @@
-// scripts/seed.js
-
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { faker } from "@faker-js/faker";
@@ -19,33 +17,45 @@ mongoose
         process.exit(1);
     });
 
-const genratePhoneNumber = () => {
-    let mobileNumber = "+91";
-    for (let index = 0; index < 10; index++) {
-        let digit = Math.floor(Math.random()*10);
-        mobileNumber += digit;        
+// Generate Indian-style phone number (starts with 6-9, 10 digits)
+const generatePhoneNumber = () => {
+    const startDigits = ["6", "7", "8", "9"];
+    let number = "+91" + faker.helpers.arrayElement(startDigits);
+    for (let i = 0; i < 9; i++) {
+        number += Math.floor(Math.random() * 10);
     }
-    return mobileNumber;
-}
+    return number;
+};
 
 // Generate sample users
 const generateUsers = async (count = 50) => {
     const users = [];
-    const hashedPassword = await bcrypt.hash("Password123", 10);
 
     for (let i = 0; i < count; i++) {
         const role = i % 2 === 0 ? "owner" : "seeker";
 
-        users.push({
-            name: faker.person.fullName(),
-            email: faker.internet.email(),
-            contactInfo: {
-                phone: genratePhoneNumber(),
-                address: ""
-            },
-            password: hashedPassword,
-            role
-        });
+        const firstName = faker.person.firstName('male'); // Indian-style common
+        const lastName = faker.person.lastName();
+        const fullName = `${firstName} ${lastName}`;
+        const email = `${firstName.toLowerCase()}@example.com`;
+        const rawPassword = `${firstName}@123`;
+        const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+        if(!users.some(user => user.email == email)){
+            users.push({
+                name: fullName,
+                email,
+                contactInfo: {
+                    phone: generatePhoneNumber(),
+                    address: ""
+                },
+                password: hashedPassword,
+                role
+            });
+        }else{
+            i--;
+        }
+        
     }
 
     const createdUsers = await User.insertMany(users);
@@ -75,25 +85,36 @@ const generateRooms = async (owners, count = 100) => {
     await Room.insertMany(rooms);
 };
 
+// Run Seeder
 const seedDatabase = async () => {
-    try {
-        console.log("Clearing existing data...");
-        await User.deleteMany();
-        await Room.deleteMany();
+    mongoose.connection.once("open", async () => {
+        console.log("✅ MongoDB connected");
 
-        console.log("Generating users...");
-        const users = await generateUsers(50); // 25 seekers, 25 owners
-        const owners = users.filter(user => user.role === "owner");
+        try {
+            console.log("Clearing existing data...");
+            await User.deleteMany();
+            await Room.deleteMany();
 
-        console.log("Generating rooms...");
-        await generateRooms(owners, 100);
+            console.log("Generating users...");
+            const users = await generateUsers(50);
+            const owners = users.filter(user => user.role === "owner");
 
-        console.log("Seeding completed ✅");
-        process.exit(0);
-    } catch (err) {
-        console.error("Seeding failed ❌", err);
+            console.log("Generating rooms...");
+            await generateRooms(owners, 100);
+
+            console.log("Seeding completed ✅");
+            process.exit(0);
+        } catch (err) {
+            console.error("Seeding failed ❌", err);
+            process.exit(1);
+        }
+    });
+
+    mongoose.connection.on("error", (err) => {
+        console.error("❌ MongoDB connection error:", err);
         process.exit(1);
-    }
+    });
+
 };
 
 seedDatabase();
