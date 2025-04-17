@@ -15,6 +15,55 @@ const Signup = () => {
 
   const { signup, loading } = useSignup();
 
+  const indianFirstNames = [
+    "Aarav",
+    "Vivaan",
+    "Aditya",
+    "Vihaan",
+    "Krishna",
+    "Arjun",
+    "Sai",
+    "Rohan",
+    "Ishaan",
+    "Kabir",
+    "Anaya",
+    "Diya",
+    "Myra",
+    "Ira",
+    "Aanya",
+    "Saanvi",
+    "Meera",
+    "Tara",
+    "Kiara",
+    "Avni",
+  ];
+
+  const getRandomMobile = () => {
+    const prefix = ["98", "99", "97", "96", "95", "94", "93", "92"];
+    const randPrefix = prefix[Math.floor(Math.random() * prefix.length)];
+    const suffix = Math.floor(10000000 + Math.random() * 90000000); // 8 digits
+    return "+91" + randPrefix + suffix;
+  };
+
+  const fillRandomData = () => {
+    const firstName =
+      indianFirstNames[Math.floor(Math.random() * indianFirstNames.length)];
+    const lastName =
+      indianFirstNames[Math.floor(Math.random() * indianFirstNames.length)];
+    const fullName = `${firstName} ${lastName}`;
+    const email = `${firstName.toLowerCase()}@example.com`;
+    const password = `${firstName}@123`;
+    const mobile = getRandomMobile();
+    const randomRole = Math.random() > 0.5 ? "owner" : "seeker";
+
+    setName(fullName);
+    setEmail(email);
+    setPassword(password);
+    setMobileNumber(mobile);
+    setRole(randomRole);
+  };
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -41,7 +90,17 @@ const Signup = () => {
         <h2 className="text-4xl font-semibold text-center mb-6">
           Create an Account
         </h2>
-  
+        {/* Fill Random Data Button */}
+        <div className="w-full flex justify-center">
+          <Button
+            onClick={fillRandomData}
+            variant="contained"
+            color="secondary"
+          >
+            Fill Random Data
+          </Button>
+        </div>
+
         {/* Sign Up Form */}
         <form onSubmit={handleSignup}>
           <div className="flex flex-col gap-6">
@@ -129,7 +188,12 @@ const Signup = () => {
 
           {/* Submit Button */}
           <div className="w-full flex items-center justify-center mt-10">
-            <Button type="submit" variant="outlined" disabled={loading} loading={loading}>
+            <Button
+              type="submit"
+              variant="outlined"
+              disabled={loading}
+              loading={loading}
+            >
               Sign Up
             </Button>
           </div>
