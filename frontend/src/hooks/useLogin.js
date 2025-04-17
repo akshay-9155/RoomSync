@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import axiosInstance from "../utils/axiosInstance.jsx";
 import { setUser } from "../features/authSlice";
 import { setAccessToken } from "../utils/axiosInstance.jsx";
+import toast from "react-hot-toast";
 
 const useLogin = () => {
     const [loading, setLoading] = useState(false);
@@ -28,9 +29,12 @@ const useLogin = () => {
             // Update Redux state
             dispatch(setUser(user));
 
+            toast.success("Login successful!");
+
             return { success: true };
         } catch (err) {
             console.error("Login error:", err);
+            toast.error(err.response?.data?.message || "Login failed");
             setError(err.response?.data?.message || "Login failed");
             return { success: false };
         } finally {

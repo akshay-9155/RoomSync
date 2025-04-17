@@ -2,18 +2,33 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import useSignup from "../hooks/useSignup";
+import { Button } from "@mui/material";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("seeker");
   const navigate = useNavigate();
-  const handleSignup = (e) => {
+
+  const { signup, loading } = useSignup();
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    navigate("/login");
-    // Perform signup logic (send to backend, validation, etc.)
-    console.log({ name, email, password });
+
+    const { success } = await signup({
+      name,
+      email,
+      password,
+      role,
+      mobileNumber,
+    });
+
+    if (success) {
+      navigate(role == "owner" ? "/" : "/roomseekerdetails"); // or go to /dashboard or /profile
+    }
   };
 
   const handleOAuthClick = () => {
@@ -26,95 +41,98 @@ const Signup = () => {
         <h2 className="text-4xl font-semibold text-center mb-6">
           Create an Account
         </h2>
-
+  
         {/* Sign Up Form */}
-        <form onSubmit={handleSignup} className="flex flex-col gap-6">
-          {/* Name Field */}
-          <div className="neumorphism p-4 rounded-xl">
-            <input
-              type="text"
-              placeholder="Full Name"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
-            />
-          </div>
+        <form onSubmit={handleSignup}>
+          <div className="flex flex-col gap-6">
+            {/* Name Field */}
+            <div className="neumorphism p-4 rounded-xl">
+              <input
+                type="text"
+                placeholder="Full Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
+              />
+            </div>
 
-          {/* Email Field */}
-          <div className="neumorphism p-4 rounded-xl">
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
-            />
-          </div>
+            {/* Email Field */}
+            <div className="neumorphism p-4 rounded-xl">
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
+              />
+            </div>
 
-          {/* Mobile Field */}
-          {/* <div className="neumorphism p-4 rounded-xl">
-            <input
-              type="tel"
-              placeholder="Mobile Number"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
-            />
-          </div> */}
+            <div className="neumorphism p-4 rounded-xl">
+              <PhoneInput
+                country={"in"}
+                value={mobileNumber}
+                onChange={(phone) => setMobileNumber(phone)}
+                inputStyle={{
+                  width: "100%",
+                  padding: "24px 40px",
+                  background: "#e0e5ec",
+                  borderRadius: "0.375rem",
+                  boxShadow:
+                    "8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7)",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "16px",
+                  color: "#222",
+                }}
+                containerStyle={{
+                  width: "100%",
+                  background: "#e0e5ec",
+                  borderRadius: "0.375rem",
+                  boxShadow:
+                    "8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7)",
+                }}
+                buttonStyle={{
+                  background: "#e0e5ec",
+                  border: "none",
+                  borderRadius: "0.375rem",
+                }}
+              />
+            </div>
 
-          <div className="neumorphism p-4 rounded-xl">
-            <PhoneInput
-              country={"in"}
-              value={mobileNumber}
-              onChange={(phone) => setMobileNumber(phone)}
-              inputStyle={{
-                width: "100%",
-                padding: "24px 40px",
-                background: "#e0e5ec",
-                borderRadius: "0.375rem",
-                boxShadow:
-                  "8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7)",
-                border: "none",
-                outline: "none",
-                fontSize: "16px",
-                color: "#222",
-              }}
-              containerStyle={{
-                width: "100%",
-                background: "#e0e5ec",
-                borderRadius: "0.375rem",
-                boxShadow:
-                  "8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7)",
-              }}
-              buttonStyle={{
-                background: "#e0e5ec",
-                border: "none",
-                borderRadius: "0.375rem",
-              }}
-            />
-          </div>
+            {/* Password Field */}
+            <div className="neumorphism p-4 rounded-xl">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
+              />
+            </div>
 
-          {/* Password Field */}
-          <div className="neumorphism p-4 rounded-xl">
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
-            />
+            {/* Role Selection */}
+            <div className="flex items-center gap-3 neumorphism p-4 rounded-xl">
+              <input
+                type="checkbox"
+                id="isRoomOwner"
+                checked={role === "owner"}
+                onChange={(e) => setRole(e.target.checked ? "owner" : "seeker")}
+                className="w-5 h-5 accent-blue-500"
+              />
+              <label htmlFor="isRoomOwner" className="text-[#222] text-lg">
+                Are you a room owner?
+              </label>
+            </div>
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="py-3 bg-[#e0e5ec] text-gray-700 rounded-lg neumorphism text-center text-xl hover:shadow-lg transition-all"
-          >
-            Sign Up
-          </button>
+          <div className="w-full flex items-center justify-center mt-10">
+            <Button type="submit" variant="outlined" disabled={loading} loading={loading}>
+              Sign Up
+            </Button>
+          </div>
         </form>
 
         {/* Sign Up Alternative */}

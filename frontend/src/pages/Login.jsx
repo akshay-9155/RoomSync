@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
-import Button from "../components/Button";
 import useLogin from "../hooks/useLogin"; // import the hook
+import Button from "@mui/material/Button";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { login, loading, error } = useLogin(); // destructure from hook
+  const { login, loading } = useLogin(); // destructure from hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,10 +53,13 @@ const Login = () => {
               required
             />
             <Button
-              content={loading ? "Loading" : "Login"}
+              type="submit"
+              variant="outlined"
               disabled={loading}
-            />
-            {error && <p className="text-red-500 mt-2">{error}</p>}
+              loading={loading}
+            >
+              Login
+            </Button>
           </form>
         </div>
       </div>
