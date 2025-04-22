@@ -65,6 +65,16 @@ const generateUsers = async (count = 50) => {
 // Generate sample rooms
 const generateRooms = async (owners, count = 100) => {
     const types = ["pg", "apartment", "house", "1bhk", "2bhk", "3bhk"];
+    const imageArray = [
+        "https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg",
+        "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg",
+        "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
+        "https://images.pexels.com/photos/276671/pexels-photo-276671.jpeg",
+        "https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg",
+        "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg",
+        "https://images.pexels.com/photos/271621/pexels-photo-271621.jpeg",
+        "https://images.pexels.com/photos/276534/pexels-photo-276534.jpeg",
+    ];
     const rooms = [];
 
     for (let i = 0; i < count; i++) {
@@ -77,7 +87,7 @@ const generateRooms = async (owners, count = 100) => {
             rent: faker.number.int({ min: 3000, max: 30000 }),
             type: faker.helpers.arrayElement(types),
             facilities: faker.helpers.arrayElements(["WiFi", "Laundry", "Parking", "AC", "Kitchen"], 3),
-            photos: [faker.image.url(), faker.image.url()],
+            photos: faker.helpers.arrayElements(imageArray, 2),
             availability: faker.datatype.boolean()
         });
     }
