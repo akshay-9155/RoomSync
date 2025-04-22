@@ -17,7 +17,7 @@ const Home = () => {
         </header>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
           <div className="bg-white rounded-2xl p-6 shadow-neumorphism flex flex-col items-center">
             <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full mb-4 shadow-xl"></div>

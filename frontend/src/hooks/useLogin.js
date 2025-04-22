@@ -19,7 +19,6 @@ const useLogin = () => {
                 email,
                 password,
             });
-            console.log(response);
 
             const { accessToken, user } = response.data.data;
 

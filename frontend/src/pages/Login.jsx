@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
 import useLogin from "../hooks/useLogin"; // import the hook
 import Button from "@mui/material/Button";
@@ -10,6 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState("ishaan@example.com");
   const [password, setPassword] = useState("Ishaan@123");
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/rooms";
 
   const { login, loading } = useLogin(); // destructure from hook
 
@@ -17,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     const result = await login(email, password);
     if (result.success) {
-      navigate("/");
+      navigate(from, {replace: true});
     }
   };
 

@@ -64,7 +64,6 @@ const Signup = () => {
     setRole(randomRole);
   };
 
-
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -82,7 +81,7 @@ const Signup = () => {
   };
 
   const handleOAuthClick = () => {
-    navigate("/upderDevelopment");
+    navigate("/underDevelopment");
   };
 
   return (
