@@ -29,7 +29,7 @@ const Home = () => {
               features.
             </p>
             <button
-              onClick={() => navigate("/roomseekerdetails")}
+              onClick={() => navigate("/signup")}
               className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
             >
               Get Started
