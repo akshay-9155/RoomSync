@@ -113,7 +113,7 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 export const logoutUser = asyncHandler(async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     await User.findByIdAndUpdate(
         req.user._id,
         {

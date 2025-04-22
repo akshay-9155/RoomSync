@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "../store";
-import { logout, setUser } from "../features/authSlice";
+import { logoutUser, setUser } from "../features/authSlice";
 
 // In-memory access token
 let accessToken = null;
@@ -57,7 +57,7 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        store.dispatch(logout());
+        store.dispatch(logoutUser());
         return Promise.reject(refreshError);
       }
     }

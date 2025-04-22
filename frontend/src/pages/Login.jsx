@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
 import useLogin from "../hooks/useLogin"; // import the hook
 import Button from "@mui/material/Button";
+import { buttonNeumorphicSx } from "../utils/muiHelper";
 
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("ishaan@example.com");
+  const [password, setPassword] = useState("Ishaan@123");
   const navigate = useNavigate();
 
   const { login, loading } = useLogin(); // destructure from hook
@@ -54,9 +55,11 @@ const Login = () => {
             />
             <Button
               type="submit"
-              variant="outlined"
+              variant="contained"
               disabled={loading}
               loading={loading}
+              sx={buttonNeumorphicSx}
+              className="w-full"
             >
               Login
             </Button>

@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.webp";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../features/authSlice";
-import Button from "./Button";
+import { useSelector } from "react-redux";
+// import Button from "./Button";
+import Button from "@mui/material/Button";
+import useLogout from "../hooks/useLogout";
+import { buttonNeumorphicSx } from "../utils/muiHelper";
 
 const Navbar = () => {
   const navLinkStyles =
     " ";
     const {user} = useSelector(state => state.auth);
-    const {dispatch} = useDispatch();
-    const handleLogout = () => {
-      dispatch(logout())
-    }
+    const { logout, loading } = useLogout();
+    const handleLogout = async () => {
+      await logout();
+    };
 
   return (
     <header className=" sticky top-0 z-10 w-full bg-gray-200 text-zinc-200 p-4">
@@ -34,38 +36,42 @@ const Navbar = () => {
             to="/rooms"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}
           >
-            <Button content="Rooms" />
+            <Button sx={buttonNeumorphicSx} variant="contained">Rooms</Button>
           </Link>
           <Link
             to="/rooms/1"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}
           >
-            <Button content="Room Details" />
+            <Button sx={buttonNeumorphicSx} variant="contained">Room Details</Button>
           </Link>
           <Link
             to="/profile/1"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}
           >
-            <Button content="Profile" />
+            <Button sx={buttonNeumorphicSx} variant="contained"
+            >
+              Profile
+            </Button>
           </Link>
           <Link
-            to="/login"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}
             onClick={handleLogout}
           >
-            <Button content="Logout" />
+            <Button sx={buttonNeumorphicSx} variant="contained" loading={loading} disabled={loading}>
+              Log Out
+            </Button>
           </Link>
           <Link
             to="/login"
             className={`${navLinkStyles} ${user ? "hidden" : "block"}`}
           >
-            <Button content="Login" />
+            <Button sx={buttonNeumorphicSx} variant="contained">Log In</Button>
           </Link>
           <Link
             to="/signup"
             className={`${navLinkStyles} ${user ? "hidden" : "block"}`}
           >
-            <Button content="Signup" />
+            <Button sx={buttonNeumorphicSx} variant="contained">Sign Up</Button>
           </Link>
         </nav>
       </div>

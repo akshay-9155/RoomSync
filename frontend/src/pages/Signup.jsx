@@ -4,6 +4,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import useSignup from "../hooks/useSignup";
 import { Button } from "@mui/material";
+import { buttonNeumorphicSx } from "../utils/muiHelper";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -95,7 +96,7 @@ const Signup = () => {
           <Button
             onClick={fillRandomData}
             variant="contained"
-            color="secondary"
+            sx={buttonNeumorphicSx}
           >
             Fill Random Data
           </Button>
@@ -190,9 +191,11 @@ const Signup = () => {
           <div className="w-full flex items-center justify-center mt-10">
             <Button
               type="submit"
-              variant="outlined"
+              variant="contained"
               disabled={loading}
               loading={loading}
+              sx={buttonNeumorphicSx}
+              className="w-full"
             >
               Sign Up
             </Button>
