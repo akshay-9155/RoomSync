@@ -7,8 +7,8 @@ import { buttonNeumorphicSx } from "../utils/muiHelper";
 
 
 const Login = () => {
-  const [email, setEmail] = useState("ishaan@example.com");
-  const [password, setPassword] = useState("Ishaan@123");
+  const [email, setEmail] = useState("randolph@example.com");
+  const [password, setPassword] = useState("Randolph@123");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/rooms";
