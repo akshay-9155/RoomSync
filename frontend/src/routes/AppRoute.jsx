@@ -15,6 +15,8 @@ import ListRoom from "../pages/ListRoom";
 import UnderDevelopment from "../pages/UnderDevelopment";
 import RequireAuth from "./RequireAuth";
 import Unauthorized from "../pages/Unauthorized";
+import About from "../pages/About";
+import PrivacyPolicy from "../pages/Terms";
 
 const AppRoutes = () => {
   return (
@@ -26,6 +28,8 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/terms" element={<PrivacyPolicy />} />
 
           {/* Private Routes */}
           <Route element={<RequireAuth allowedRoles={["seeker"]} />}>

@@ -38,12 +38,12 @@ const Navbar = () => {
           >
             <Button sx={buttonNeumorphicSx} variant="contained">Rooms</Button>
           </Link>
-          <Link
+          {/* <Link
             to="/rooms/1"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}
           >
             <Button sx={buttonNeumorphicSx} variant="contained">Room Details</Button>
-          </Link>
+          </Link> */}
           <Link
             to="/profile/1"
             className={`${navLinkStyles} ${user ? "block" : "hidden"}`}

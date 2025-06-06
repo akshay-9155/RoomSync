@@ -7,7 +7,7 @@ const RoomDetails = () => {
         {/* Room Image */}
         <div className="neumorphism-inner p-4 rounded-xl">
           <img
-            src="https://via.placeholder.com/600x400"
+            src="https://imgs.search.brave.com/sKWLQ2uK44msz2z2bp6y7dUBPWthHQoAxKgWEbeMoDE/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzEwLzMwLzI2Lzg3/LzM2MF9GXzEwMzAy/Njg3MzRfRkJ5YkR5/czlsc0tlMDNIZ0Fi/SkZmUFl0ZkJzNVJT/T1ouanBn"
             alt="Room"
             className="w-full h-60 object-cover rounded-lg"
           />
@@ -17,9 +17,7 @@ const RoomDetails = () => {
         <div className="space-y-6">
           {/* Title and Price */}
           <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-semibold">
-              Cozy Apartment in Pune
-            </h2>
+            <h2 className="text-3xl font-semibold">Cozy Apartment in Pune</h2>
             <p className="text-xl font-bold bg-[#e0e5ec] py-2 px-4 rounded-lg neumorphism">
               Rs8000/month
             </p>

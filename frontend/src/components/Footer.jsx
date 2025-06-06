@@ -19,20 +19,15 @@ const Footer = () => {
               Home
             </Button>
           </Link>
-          <Link
-            to="/about"
-          >
+          <Link to="/about">
             <Button sx={buttonNeumorphicSx} variant="contained">
               About
             </Button>
           </Link>
-          <Link
-            to="/privacy"
-          >
+          <Link to="/terms">
             <Button sx={buttonNeumorphicSx} variant="contained">
               Privacy Policy
             </Button>
-            
           </Link>
         </div>
       </div>

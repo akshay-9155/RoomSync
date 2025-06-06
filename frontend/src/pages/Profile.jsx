@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Avatar,
@@ -10,9 +10,13 @@ import {
   DialogActions,
   TextField,
   Stack,
+  Skeleton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import useGetUserProfile from "../hooks/useGetUserProfile";
+import useUpdateUserProfile from "../hooks/useUpdateProfile";
 
 const NeumorphicBox = styled(Box)(() => ({
   boxShadow:
@@ -22,52 +26,66 @@ const NeumorphicBox = styled(Box)(() => ({
   padding: "1rem",
 }));
 
-const ProfileField = ({ label, value }) => (
-  <NeumorphicBox
-    sx={{ display: "flex", alignItems: "center", gap: 1 }}
-  >
+const ProfileField = ({ label, value, loading }) => (
+  <NeumorphicBox sx={{ display: "flex", alignItems: "center", gap: 1 }}>
     <Typography variant="body2" color="text.secondary" fontWeight={500}>
       {label}:
     </Typography>
-    <Typography
-      variant="subtitle1"
-      sx={{ textTransform: label === "Email" ? "none" : "capitalize" }}
-    >
-      {value?.toString()}
-    </Typography>
+    {loading ? (
+      <Skeleton variant="text" width={120} />
+    ) : (
+      <Typography
+        variant="subtitle1"
+        sx={{ textTransform: label === "Email" ? "none" : "capitalize" }}
+      >
+        {value?.toString() || "-"}
+      </Typography>
+    )}
   </NeumorphicBox>
 );
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    avatar: "",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+123 456 7890",
-    gender: "male",
-    age: 25,
-    profession: "Engineer",
-    lifestyle: "Night Owl",
-    diet: "non-vegetarian",
-    hobbies: "Reading, Gaming",
-    address: "123 Main Street, City",
-  });
-
-
+  const [userData, setUserData] = useState({});
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState({});
+  const { user } = useSelector((state) => state.auth);
+  const { getUserProfile, loading } = useGetUserProfile();
+  const { updateUserProfile, loading : updateUserLoading } = useUpdateUserProfile();
+  const allowedUpdates = [
+    "name",
+    "age",
+    "profession",
+    "lifestyle",
+    "interests",
+    "smoking",
+    "drinking",
+    "pets",
+    "diet",
+    "contactInfo",
+  ];
+  
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const profile = await getUserProfile(user._id);
+      setUserData(profile);
+    };
+    fetchProfile();
+  }, []);
 
   const handleOpenDialog = () => {
-    setFormData(user);
+    setFormData(userData);
     setEditDialogOpen(true);
   };
 
   const handleCloseDialog = () => setEditDialogOpen(false);
 
-  const handleSave = () => {
-    setUser(formData);
+  const handleSave = async () => {
+    const updatedUser = await updateUserProfile(userData._id, formData);
+    setUserData(updatedUser);
     setEditDialogOpen(false);
-    // TODO: Call API to update user info
+    setUserData(formData);
+    // TODO: Call API to update userData info
   };
 
   const handleChange = (field) => (e) => {
@@ -88,7 +106,7 @@ const Profile = () => {
         <Stack spacing={2} alignItems="center">
           <Box position="relative" display="inline-block">
             <Avatar
-              src={user.avatar || ""}
+              src={userData.profilePicture || ""}
               alt="Profile Picture"
               sx={{ width: 100, height: 100 }}
             />
@@ -113,7 +131,10 @@ const Profile = () => {
                   if (file) {
                     const reader = new FileReader();
                     reader.onloadend = () => {
-                      setUser({ ...user, avatar: reader.result });
+                      setUserData({
+                        ...userData,
+                        profilePicture: reader.result,
+                      });
                     };
                     reader.readAsDataURL(file);
                   }
@@ -122,10 +143,19 @@ const Profile = () => {
             </Box>
           </Box>
 
-          <Typography variant="h5">{user.name}</Typography>
-          <Typography variant="body1" color="text.secondary">
-            {user.email}
-          </Typography>
+          {loading ? (
+            <>
+              <Skeleton variant="text" width={120} height={28} />
+              <Skeleton variant="text" width={180} height={20} />
+            </>
+          ) : (
+            <>
+              <Typography variant="h5">{userData.name}</Typography>
+              <Typography variant="body1" color="text.secondary">
+                {userData.email}
+              </Typography>
+            </>
+          )}
         </Stack>
 
         {/* Profile Fields */}
@@ -135,13 +165,59 @@ const Profile = () => {
           gap={2}
           gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr" }}
         >
-          {Object.entries(user).map(([key, value]) => (
-            <ProfileField
-              key={key}
-              label={key.charAt(0).toUpperCase() + key.slice(1)}
-              value={value}
-            />
-          ))}
+          <ProfileField label="Role" value={userData.role} loading={loading} />
+          <ProfileField
+            label="Gender"
+            value={userData.gender}
+            loading={loading}
+          />
+          <ProfileField label="Age" value={userData.age} loading={loading} />
+          <ProfileField
+            label="Profession"
+            value={userData.profession}
+            loading={loading}
+          />
+          <ProfileField
+            label="Lifestyle"
+            value={userData.lifestyle}
+            loading={loading}
+          />
+          <ProfileField label="Diet" value={userData.diet} loading={loading} />
+          <ProfileField
+            label="Hobbies"
+            value={userData.hobbies}
+            loading={loading}
+          />
+          <ProfileField
+            label="Smoking"
+            value={userData.smoking ? "Yes" : "No"}
+            loading={loading}
+          />
+          <ProfileField
+            label="Drinking"
+            value={userData.drinking ? "Yes" : "No"}
+            loading={loading}
+          />
+          <ProfileField
+            label="Pets"
+            value={userData.pets ? "Yes" : "No"}
+            loading={loading}
+          />
+          <ProfileField
+            label="Interests"
+            value={userData.interests?.join(", ")}
+            loading={loading}
+          />
+          <ProfileField
+            label="Phone"
+            value={userData.contactInfo?.phone}
+            loading={loading}
+          />
+          <ProfileField
+            label="Address"
+            value={userData.contactInfo?.address}
+            loading={loading}
+          />
         </Box>
 
         <Box mt={4} display="flex" justifyContent="center">
@@ -157,9 +233,7 @@ const Profile = () => {
               textTransform: "none",
               color: "gray",
               fontWeight: 600,
-              "&:hover": {
-                boxShadow: "none",
-              },
+              "&:hover": { boxShadow: "none" },
             }}
           >
             Update Profile
@@ -172,25 +246,54 @@ const Profile = () => {
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent dividers>
           <Box
-            mt={4}
+            mt={2}
             display="grid"
             gap={2}
             gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr" }}
           >
-            {Object.entries(formData).map(([key, value]) => (
-              <TextField
-                key={key}
-                label={key.charAt(0).toUpperCase() + key.slice(1)}
-                value={value}
-                onChange={handleChange(key)}
-                fullWidth
-              />
-            ))}
+            {allowedUpdates.map((field) => {
+              const value = formData[field];
+
+              if (
+                typeof value === "object" &&
+                value !== null &&
+                !Array.isArray(value)
+              ) {
+                return Object.entries(value).map(([subKey, subValue]) => (
+                  <TextField
+                    key={`${field}.${subKey}`}
+                    label={subKey.charAt(0).toUpperCase() + subKey.slice(1)}
+                    value={subValue || ""}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        [field]: {
+                          ...formData[field],
+                          [subKey]: e.target.value,
+                        },
+                      })
+                    }
+                    fullWidth
+                  />
+                ));
+              }
+
+              return (
+                <TextField
+                  key={field}
+                  label={field.charAt(0).toUpperCase() + field.slice(1)}
+                  value={value || ""}
+                  onChange={handleChange(field)}
+                  fullWidth
+                />
+              );
+            })}
           </Box>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleSave} variant="contained">
+          <Button onClick={handleSave} variant="contained" loading={updateUserLoading}>
             Save
           </Button>
         </DialogActions>
