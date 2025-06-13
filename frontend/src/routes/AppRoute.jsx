@@ -11,7 +11,7 @@ import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
 import Footer from "../components/Footer";
 import RoomSeekerDetails from "../pages/RoomSeekerDetails";
-import ListRoom from "../pages/ListRoom";
+import ListRoom from "../pages/listRoom";
 import UnderDevelopment from "../pages/UnderDevelopment";
 import RequireAuth from "./RequireAuth";
 import Unauthorized from "../pages/Unauthorized";
@@ -41,7 +41,7 @@ const AppRoutes = () => {
 
           <Route element={<RequireAuth allowedRoles={["owner"]} />}>
             <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/ListRoom" element={<ListRoom />} />
+            <Route path="/listRoom" element={<ListRoom />} />
           </Route>
           <Route element={<RequireAuth allowedRoles={["owner", "seeker"]} />}>
             <Route path="/chat" element={<Chat />} />

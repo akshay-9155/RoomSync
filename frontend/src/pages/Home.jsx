@@ -1,8 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const handleClick = () => {
+    if (user) {
+      navigate("/rooms");
+    } else {
+      navigate("/signup");
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 flex items-center justify-center p-6">
       <div className="max-w-4xl w-full bg-white rounded-3xl p-8 shadow-2xl">
@@ -29,7 +38,7 @@ const Home = () => {
               features.
             </p>
             <button
-              onClick={() => navigate("/signup")}
+              onClick={handleClick}
               className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
             >
               Get Started
@@ -44,7 +53,7 @@ const Home = () => {
               List your available rooms and find compatible roommates quickly.
             </p>
             <button
-              onClick={() => navigate("/ListRoom")}
+              onClick={() => navigate("/listRoom")}
               className="mt-4 px-6 py-2 bg-green-500 text-white rounded-full shadow-neumorphism hover:shadow-md"
             >
               Start Listing

@@ -76,7 +76,7 @@ const Signup = () => {
     });
 
     if (success) {
-      navigate(role == "owner" ? "/" : "/roomseekerdetails"); // or go to /dashboard or /profile
+      navigate(role == "owner" ? "/listRoom" : "/roomseekerdetails");
     }
   };
 
