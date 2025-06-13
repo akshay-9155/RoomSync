@@ -11,7 +11,11 @@ import {
   FormControlLabel,
   Button,
   Pagination,
+  Box,
+  Typography,
 } from "@mui/material";
+import AddHomeIcon from "@mui/icons-material/AddHome";
+import { useNavigate } from "react-router-dom";
 
 const roomTypes = [
   "PG",
@@ -21,13 +25,15 @@ const roomTypes = [
   "2BHK",
   "3BHK",
   "Others",
-  "All"
+  "All",
 ];
 const facilitiesList = ["WiFi", "AC", "Laundry", "Parking", "Meals", "Kitchen"];
 
 const RoomList = () => {
   const { rooms } = useSelector((state) => state.rooms);
+  const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const roomsPerPage = 6;
 
@@ -132,6 +138,57 @@ const RoomList = () => {
         </div>
       </div>
 
+      {!currentRooms.length ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+            mt={4}
+          >
+            {user.role === "seeker" ? (
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#777",
+                  fontWeight: 500,
+                  padding: 2,
+                  background: "#e0e0e0",
+                  borderRadius: "15px",
+                  boxShadow: "7px 7px 15px #bebebe, -7px -7px 15px #ffffff",
+                }}
+              >
+                No rooms to show for seekers
+              </Typography>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => navigate("/listRoom")}
+                startIcon={<AddHomeIcon />}
+                sx={{
+                  background: "#e0e0e0",
+                  color: "#333",
+                  borderRadius: "20px",
+                  paddingX: 4,
+                  paddingY: 1.5,
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                  textTransform: "none",
+                  boxShadow: "7px 7px 15px #bebebe, -7px -7px 15px #ffffff",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    background: "#d6d6d6",
+                    boxShadow:
+                      "inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff",
+                  },
+                }}
+              >
+                Add a New Room
+              </Button>
+            )}
+          </Box>
+        ) :
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {currentRooms.map((room) => (
           <div
@@ -187,7 +244,7 @@ const RoomList = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
 
       {pageCount > 1 && (
         <div className="flex justify-center mt-8">

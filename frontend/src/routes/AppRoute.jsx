@@ -33,17 +33,16 @@ const AppRoutes = () => {
 
           {/* Private Routes */}
           <Route element={<RequireAuth allowedRoles={["seeker"]} />}>
-            <Route path="/rooms" element={<RoomList />} />
             <Route path="/rooms/:id" element={<RoomDetails />} />
-            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/roomseekerdetails" element={<RoomSeekerDetails />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={["owner"]} />}>
-            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/listRoom" element={<ListRoom />} />
           </Route>
           <Route element={<RequireAuth allowedRoles={["owner", "seeker"]} />}>
+            <Route path="/rooms" element={<RoomList />} />
+            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/chat" element={<Chat />} />
           </Route>
 

@@ -32,19 +32,26 @@ export const createRoom = asyncHandler(async (req, res) => {
 export const getAllRooms = asyncHandler(async (req, res) => {
     const filters = {};
 
-    const { location, type, minRent, maxRent, availability } = req.query;
+    const { location, type, minRent, maxRent, availability, facilities, userId } = req.query;
 
     if (location) filters.location = new RegExp(location, "i");
     if (type) filters.type = type;
     if (availability !== undefined) filters.availability = availability === "true";
-    if (minRent || maxRent) filters.rent = {};
-    if (minRent) filters.rent.$gte = Number(minRent);
-    if (maxRent) filters.rent.$lte = Number(maxRent);
-    if (req.query.facilities) {
-        const facilitiesArray = req.query.facilities.split(",");
+
+    if (minRent || maxRent) {
+        filters.rent = {};
+        if (minRent) filters.rent.$gte = Number(minRent);
+        if (maxRent) filters.rent.$lte = Number(maxRent);
+    }
+
+    if (facilities) {
+        const facilitiesArray = facilities.split(",");
         filters.facilities = { $all: facilitiesArray };
     }
 
+    if (userId) {
+        filters.ownerId = userId;
+    }
 
     const rooms = await Room.find(filters).populate("ownerId", "name email");
 
@@ -52,6 +59,7 @@ export const getAllRooms = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, "Rooms fetched successfully", rooms));
 });
+
 
 // @desc    Get room by ID
 export const getRoomById = asyncHandler(async (req, res) => {

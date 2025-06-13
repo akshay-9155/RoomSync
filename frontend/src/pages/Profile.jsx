@@ -203,11 +203,12 @@ const Profile = () => {
             value={userData.pets ? "Yes" : "No"}
             loading={loading}
           />
+          {userData.role == "seeker" &&
           <ProfileField
             label="Interests"
             value={userData.interests?.join(", ")}
             loading={loading}
-          />
+          />}
           <ProfileField
             label="Phone"
             value={userData.contactInfo?.phone}
