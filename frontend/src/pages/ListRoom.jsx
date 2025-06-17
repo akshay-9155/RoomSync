@@ -85,7 +85,7 @@ const ListRoom = () => {
               <option value="1bhk">1BHK</option>
               <option value="2bhk">2BHK</option>
               <option value="3bhk">3BHK</option>
-              <option value="others">Othesr</option>
+              <option value="others">Others</option>
             </select>
           </div>
 

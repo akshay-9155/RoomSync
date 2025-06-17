@@ -8,11 +8,11 @@ import { generateAccessAndRefreshTokens } from "../utils/helper.js";
 import jwt from 'jsonwebtoken';
 
 export const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, role, mobileNumber } = req.body;
-
+    const { name, email, password, role, mobileNumber, gender } = req.body;
+    console.log(name, email, password, role, mobileNumber, gender);
     // Basic validations
-    if (!name || !email || !password || !role || !mobileNumber) {
-        throw new ApiError(400, "All fields are required (name, email, password, role, mobileNumber)");
+    if (!name || !email || !password || !role || !mobileNumber || !gender) {
+        throw new ApiError(400, "All fields are required (name, email, password, role, mobileNumber, gender)");
     }
 
     // Check if user already exists
@@ -23,9 +23,11 @@ export const registerUser = asyncHandler(async (req, res) => {
     if (existingUser) {
         throw new ApiError(409, "User already exists with this email or mobile number");
     }
-    const contactInfo = {phone: mobileNumber, address: ""};
+
+    const contactInfo = { phone: mobileNumber, address: "" };
+
     // Create new user
-    const newUser = await User.create({ name, email, password, role, contactInfo });
+    const newUser = await User.create({ name, email, password, role, gender, contactInfo });
 
     // Generate tokens using model method
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(newUser._id);
@@ -35,13 +37,14 @@ export const registerUser = asyncHandler(async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
+        gender: newUser.gender,
         contactInfo: newUser.contactInfo
     };
 
     const options = {
         httpOnly: true,
         secure: true
-    }
+    };
 
     // Send response
     return res
@@ -52,6 +55,7 @@ export const registerUser = asyncHandler(async (req, res) => {
             accessToken
         }));
 });
+
 
 // controllers/auth.controller.js
 

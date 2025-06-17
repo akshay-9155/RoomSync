@@ -9,7 +9,7 @@ const useSignup = () => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
 
-    const signup = async ({ name, email, password, role, mobileNumber }) => {
+    const signup = async ({ name, email, password, role, mobileNumber, gender }) => {
         setLoading(true);
         setError(null);
 
@@ -20,6 +20,7 @@ const useSignup = () => {
                 password,
                 role,
                 mobileNumber,
+                gender
             });
 
             const { accessToken, user } = response.data.data;

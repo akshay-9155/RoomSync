@@ -11,6 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
   const [role, setRole] = useState("seeker");
   const navigate = useNavigate();
 
@@ -73,7 +74,9 @@ const Signup = () => {
       password,
       role,
       mobileNumber,
+      gender
     });
+    
 
     if (success) {
       navigate(role == "owner" ? "/listRoom" : "/roomseekerdetails");
@@ -170,6 +173,23 @@ const Signup = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full p-2 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
                 />
+              </div>
+
+              {/* Gender Field */}
+              <div className="neumorphism p-3 rounded-xl">
+                <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  required
+                  className="w-full p-2 bg-[#e0e5ec] text-[#222] border-0 rounded-md shadow-md focus:outline-none"
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
 
               {/* Role Selection */}
