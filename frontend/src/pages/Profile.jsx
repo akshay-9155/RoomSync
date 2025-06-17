@@ -11,6 +11,8 @@ import {
   TextField,
   Stack,
   Skeleton,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
@@ -48,21 +50,38 @@ const Profile = () => {
   const [userData, setUserData] = useState({});
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [formData, setFormData] = useState({});
+  const [newInterest, setNewInterest] = useState("");
   const { user } = useSelector((state) => state.auth);
   const { getUserProfile, loading } = useGetUserProfile();
   const { updateUserProfile, loading : updateUserLoading } = useUpdateUserProfile();
-  const allowedUpdates = [
-    "name",
-    "age",
-    "profession",
-    "lifestyle",
-    "interests",
-    "smoking",
-    "drinking",
-    "pets",
-    "diet",
-    "contactInfo",
-  ];
+
+  const isSeeker = user?.role === "seeker";
+
+  const allowedUpdates = isSeeker
+    ? [
+        "name",
+        "age",
+        "profession",
+        "lifestyle",
+        "hobbies",
+        "contactInfo",
+        "interests",
+        "smoking",
+        "drinking",
+        "pets",
+        "diet",
+      ]
+    : [
+        "name",
+        "age",
+        "profession",
+        "contactInfo",
+        "smoking",
+        "drinking",
+        "pets",
+        "diet",
+      ];
+
   
 
   useEffect(() => {
@@ -177,17 +196,7 @@ const Profile = () => {
             value={userData.profession}
             loading={loading}
           />
-          <ProfileField
-            label="Lifestyle"
-            value={userData.lifestyle}
-            loading={loading}
-          />
           <ProfileField label="Diet" value={userData.diet} loading={loading} />
-          <ProfileField
-            label="Hobbies"
-            value={userData.hobbies}
-            loading={loading}
-          />
           <ProfileField
             label="Smoking"
             value={userData.smoking ? "Yes" : "No"}
@@ -203,12 +212,6 @@ const Profile = () => {
             value={userData.pets ? "Yes" : "No"}
             loading={loading}
           />
-          {userData.role == "seeker" &&
-          <ProfileField
-            label="Interests"
-            value={userData.interests?.join(", ")}
-            loading={loading}
-          />}
           <ProfileField
             label="Phone"
             value={userData.contactInfo?.phone}
@@ -219,6 +222,26 @@ const Profile = () => {
             value={userData.contactInfo?.address}
             loading={loading}
           />
+
+          {isSeeker && (
+            <>
+              <ProfileField
+                label="Lifestyle"
+                value={userData.lifestyle}
+                loading={loading}
+              />
+              <ProfileField
+                label="Hobbies"
+                value={userData.hobbies}
+                loading={loading}
+              />
+              <ProfileField
+                label="Interests"
+                value={userData.interests?.join(", ")}
+                loading={loading}
+              />
+            </>
+          )}
         </Box>
 
         <Box mt={4} display="flex" justifyContent="center">
@@ -255,29 +278,157 @@ const Profile = () => {
             {allowedUpdates.map((field) => {
               const value = formData[field];
 
-              if (
-                typeof value === "object" &&
-                value !== null &&
-                !Array.isArray(value)
-              ) {
-                return Object.entries(value).map(([subKey, subValue]) => (
-                  <TextField
-                    key={`${field}.${subKey}`}
-                    label={subKey.charAt(0).toUpperCase() + subKey.slice(1)}
-                    value={subValue || ""}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        [field]: {
-                          ...formData[field],
-                          [subKey]: e.target.value,
-                        },
-                      })
-                    }
-                    fullWidth
-                  />
-                ));
+              if (field === "contactInfo") {
+                return Object.entries(value || {}).map(([subKey, subValue]) => {
+                  const isAddress = subKey === "address";
+                  return (
+                    <TextField
+                      key={`${field}.${subKey}`}
+                      label={subKey.charAt(0).toUpperCase() + subKey.slice(1)}
+                      value={subValue || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [field]: {
+                            ...formData[field],
+                            [subKey]: e.target.value,
+                          },
+                        })
+                      }
+                      fullWidth
+                      sx={subKey === "address" ? { gridColumn: "1 / -1" } : {}}
+                    />
+                  );
+                });
               }
+              
+
+              // Dropdown for boolean fields
+              if (["smoking", "drinking", "pets"].includes(field)) {
+                return (
+                  <Box key={field}>
+                    <Typography fontSize={13} fontWeight={500}>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </Typography>
+                    <Select
+                      value={value ? "Yes" : "No"}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [field]: e.target.value === "Yes",
+                        })
+                      }
+                      fullWidth
+                    >
+                      <MenuItem value="Yes">Yes</MenuItem>
+                      <MenuItem value="No">No</MenuItem>
+                    </Select>
+                  </Box>
+                );
+              }
+
+              // Dropdown for diet
+              if (field === "diet") {
+                return (
+                  <Box key={field}>
+                    <Typography fontSize={13} fontWeight={500}>
+                      Diet
+                    </Typography>
+                    <Select
+                      value={value || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, diet: e.target.value })
+                      }
+                      fullWidth
+                    >
+                      <MenuItem value="vegetarian">Vegetarian</MenuItem>
+                      <MenuItem value="non-vegetarian">Non-Vegetarian</MenuItem>
+                      <MenuItem value="eggetarian">Eggetarian</MenuItem>
+                    </Select>
+                  </Box>
+                );
+              }
+
+              if (field === "interests") {
+                return (
+                  <Box
+                    key={field}
+                    sx={{
+                      gridColumn: "1 / -1",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography fontSize={13} fontWeight={500}>
+                      Interests
+                    </Typography>
+
+                    {/* Input with Add Button */}
+                    <Box display="flex" gap={1}>
+                      <TextField
+                        label="Add Interest"
+                        value={newInterest}
+                        onChange={(e) => setNewInterest(e.target.value)}
+                        fullWidth
+                      />
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          if (newInterest.trim()) {
+                            setFormData((prev) => ({
+                              ...prev,
+                              interests: [
+                                ...(prev.interests || []),
+                                newInterest.trim(),
+                              ],
+                            }));
+                            setNewInterest("");
+                          }
+                        }}
+                      >
+                        +
+                      </Button>
+                    </Box>
+
+                    {/* Show Current Interests */}
+                    <Box display="flex" flexWrap="wrap" gap={1}>
+                      {(formData.interests || []).map((interest, idx) => (
+                        <Box
+                          key={idx}
+                          sx={{
+                            px: 1.5,
+                            py: 0.5,
+                            bgcolor: "#f0f0f0",
+                            borderRadius: "999px",
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "0.9rem",
+                            gap: 0.5,
+                          }}
+                        >
+                          {interest}
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                interests: prev.interests.filter(
+                                  (_, i) => i !== idx
+                                ),
+                              }))
+                            }
+                            sx={{ minWidth: "auto", p: 0, ml: 0.5 }}
+                          >
+                            ❌
+                          </Button>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                );
+              }
+              
 
               return (
                 <TextField
@@ -294,7 +445,11 @@ const Profile = () => {
 
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleSave} variant="contained" loading={updateUserLoading}>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            loading={updateUserLoading}
+          >
             Save
           </Button>
         </DialogActions>

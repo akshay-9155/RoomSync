@@ -34,7 +34,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
     // Profile Picture update logic not implemented yet
 
-    const allowedUpdates = ["name", "age", "profession", "lifestyle", "interests", "smoking", "drinking", "pets", "diet", "contactInfo"];
+    const allowedUpdates = ["name", "age", "profession", "lifestyle", "interests", "hobbies", "smoking", "drinking", "pets", "diet", "contactInfo"];
     const updates = {};
 
     for (const key of allowedUpdates) {
